@@ -12,3 +12,23 @@ def generate_embedding(text: str):
     )
 
     return embedding.tolist()
+
+
+def embed_chunks(chunks):
+
+    embedded_chunks = []
+
+    for chunk in chunks:
+
+        embedding = generate_embedding(
+            chunk["text"]
+        )
+
+        embedded_chunks.append(
+            {
+                **chunk,
+                "embedding": embedding
+            }
+        )
+
+    return embedded_chunks

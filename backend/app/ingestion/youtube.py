@@ -10,6 +10,7 @@ def extract_metadata(url: str):
         info = ydl.extract_info(url, download=False)
 
     return {
+    "video_id": info.get("id"),
     "title": info.get("title"),
     "creator": info.get("uploader"),
     "views": info.get("view_count"),
