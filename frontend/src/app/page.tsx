@@ -5,10 +5,21 @@ import { useState } from "react";
 export default function Home() {
   const [videoA, setVideoA] = useState("");
   const [videoB, setVideoB] = useState("");
-  const [response, setResponse] = useState("");
+  const [question, setQuestion] = useState("");
+  const [messages, setMessages] = useState([
+  {
+    role: "assistant",
+    content: "Paste two videos and click Compare."
+  }
+]);
 
   async function compareVideos() {
-    setResponse("Loading...");
+    setMessages([
+      {
+        role: "assistant",
+        content: "Loading..."
+      }
+    ]);
 
     const res = await fetch(
       "http://127.0.0.1:8000/compare",
@@ -26,7 +37,12 @@ export default function Home() {
 
     const text = await res.text();
 
-    setResponse(text);
+    setMessages([
+      {
+        role: "assistant",
+        content: text
+      }
+    ]);
   }
 
   return (
@@ -61,8 +77,36 @@ export default function Home() {
         Compare Videos
       </button>
 
-      <div className="mt-8 whitespace-pre-wrap border p-4">
-        {response}
+      <input
+        className="border p-3 w-full mt-4"
+        placeholder="Ask a question..."
+        value={question}
+        onChange={(e) =>
+          setQuestion(e.target.value)
+        }
+      />
+
+      <div className="mt-8 border p-4">
+
+        {messages.map((message, index) => (
+
+          <div
+            key={index}
+            className="mb-6"
+          >
+
+            <strong>
+              {message.role}
+            </strong>
+
+            <div className="whitespace-pre-wrap">
+              {message.content}
+            </div>
+
+          </div>
+
+        ))}
+
       </div>
 
     </main>
