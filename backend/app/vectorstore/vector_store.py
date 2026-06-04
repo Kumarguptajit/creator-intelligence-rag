@@ -1,4 +1,5 @@
 from qdrant_client.models import PointStruct
+from qdrant_client import models
 
 from app.vectorstore.qdrant_client import client
 from app.rag.embeddings import generate_embedding
@@ -43,6 +44,33 @@ def search_chunks(
     results = client.query_points(
         collection_name="video_chunks",
         query=query_embedding,
+        limit=limit
+    )
+
+    return results.points
+
+
+
+def search_video_chunks(
+    query,
+    video_label,
+    limit=5
+):
+    query_embedding = generate_embedding(query)
+
+    results = client.query_points(
+        collection_name="video_chunks",
+        query=query_embedding,
+        query_filter=models.Filter(
+            must=[
+                models.FieldCondition(
+                    key="video_label",
+                    match=models.MatchValue(
+                        value=video_label
+                    )
+                )
+            ]
+        ),
         limit=limit
     )
 
