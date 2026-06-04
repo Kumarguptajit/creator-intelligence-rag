@@ -45,6 +45,38 @@ export default function Home() {
     ]);
   }
 
+  async function askQuestion() {
+
+    const res = await fetch(
+      "http://127.0.0.1:8000/chat",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          question
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    setMessages([
+      ...messages,
+      {
+        role: "user",
+        content: question
+      },
+      {
+        role: "assistant",
+        content: data.answer
+      }
+    ]);
+
+    setQuestion("");
+  }
+
   return (
     <main className="max-w-4xl mx-auto p-10">
 
@@ -85,6 +117,13 @@ export default function Home() {
           setQuestion(e.target.value)
         }
       />
+
+      <button
+        onClick={askQuestion}
+        className="border px-6 py-3 mt-4"
+      >
+        Send
+      </button>
 
       <div className="mt-8 border p-4">
 

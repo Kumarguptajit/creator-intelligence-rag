@@ -8,6 +8,10 @@ from app.routes.comparison import (
     router as comparison_router
 )
 
+from app.routes.chat import (
+    router as chat_router
+)
+
 app = FastAPI()
 
 app.add_middleware(
@@ -22,7 +26,10 @@ app.add_middleware(
 )
 
 app.include_router(
-    comparison_router
+    comparison_router,
+)
+app.include_router(
+    chat_router
 )
 
 @app.get("/")
