@@ -21,6 +21,16 @@ def get_video_context(
         ]
     )
 
+    context_parts = []
+    for result in results:
+        context_parts.append(
+                    f"""
+        [{result.payload['video_label']} | Chunk {result.payload['chunk_id']}]
+
+        {result.payload['text']}
+                    """
+                            )
+    context = "\n\n".join(context_parts)
     return context
 
 
@@ -47,17 +57,45 @@ Video A Transcript Context:
 Video B Transcript Context:
 {context_b}
 
-Analyze:
+Analyze the two videos as a creator intelligence analyst.
 
-1. Compare engagement rates.
-2. Compare content structure.
-3. Compare educational value.
-4. Compare likely hook effectiveness.
-5. Explain why one video may outperform the other.
-6. Suggest improvements for Video B.
-7. Cite evidence from the transcript context.
+Tasks:
 
-Use evidence from the transcript context.
+1. Compare engagement rates and explain what they indicate.
+2. Compare the opening hook and first-impression effectiveness.
+3. Compare content structure and pacing.
+4. Compare educational value and practical usefulness.
+5. Identify strengths of Video A.
+6. Identify strengths of Video B.
+7. Explain why one video may outperform the other.
+8. Suggest 3 specific improvements for Video B.
+9. Support every major claim with transcript evidence.
+
+IMPORTANT:
+
+When making a claim, cite the source.
+
+Example:
+
+Video A demonstrates the final application early in the video.
+[Source: A Chunk 51]
+
+Video B begins with conceptual explanations before practical examples.
+[Source: B Chunk 99]
+
+Output Format:
+
+## Engagement Analysis
+
+## Hook Comparison
+
+## Content Structure
+
+## Educational Value
+
+## Why One Video May Outperform The Other
+
+## Improvements For Video B
 """
 
 
