@@ -2,6 +2,8 @@ from app.vectorstore.vector_store import search_video_chunks
 
 from app.rag.generator import client
 
+from app.rag.memory import format_history
+
 
 def get_video_context(
     query,
@@ -41,9 +43,13 @@ def build_comparison_prompt(
     context_a,
     context_b
 ):
+    history = format_history()
 
     return f"""
 You are a creator intelligence analyst.
+
+Conversation History:
+{history}
 
 Video A Metadata:
 {metadata_a}
