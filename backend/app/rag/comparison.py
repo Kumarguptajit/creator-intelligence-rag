@@ -1,3 +1,30 @@
+from app.vectorstore.vector_store import search_video_chunks
+
+from app.rag.generator import client
+
+
+def get_video_context(
+    query,
+    video_label
+):
+
+    results = search_video_chunks(
+        query=query,
+        video_label=video_label,
+        limit=5
+    )
+
+    context = "\n\n".join(
+        [
+            result.payload["text"]
+            for result in results
+        ]
+    )
+
+    return context
+
+
+
 def build_comparison_prompt(
     metadata_a,
     metadata_b,
@@ -22,10 +49,23 @@ Video B Transcript Context:
 
 Analyze:
 
-1. Why Video A may outperform Video B
-2. Differences in content approach
-3. Differences in hook quality
-4. Suggestions for improving Video B
+1. Compare engagement rates.
+2. Compare content structure.
+3. Compare educational value.
+4. Compare likely hook effectiveness.
+5. Explain why one video may outperform the other.
+6. Suggest improvements for Video B.
+7. Cite evidence from the transcript context.
 
 Use evidence from the transcript context.
 """
+
+
+def compare_videos(prompt):
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
+    return response.text
