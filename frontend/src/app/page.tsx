@@ -47,34 +47,68 @@ export default function Home() {
 
   async function askQuestion() {
 
+    const userQuestion = question;
+
+    setQuestion("");
+
+    setMessages([
+      ...messages,
+      {
+        role: "user",
+        content: userQuestion
+      },
+      {
+        role: "assistant",
+        content: ""
+      }
+    ]);
+
     const res = await fetch(
-      "http://127.0.0.1:8000/chat",
+      "http://127.0.0.1:8000/stream",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          question
+          question: userQuestion
         })
       }
     );
 
-    const data = await res.json();
+    const reader = res.body?.getReader();
 
-    setMessages([
-      ...messages,
-      {
-        role: "user",
-        content: question
-      },
-      {
-        role: "assistant",
-        content: data.answer
-      }
-    ]);
+    const decoder = new TextDecoder();
 
-    setQuestion("");
+    let answer = "";
+
+    while (true) {
+
+      const { done, value } =
+        await reader!.read();
+
+      if (done) break;
+
+      answer += decoder.decode(
+        value
+      );
+
+      setMessages(prev => {
+
+        const updated = [...prev];
+
+        updated[
+          updated.length - 1
+        ] = {
+          role: "assistant",
+          content: answer
+        };
+
+        return updated;
+      });
+
+    }
+
   }
 
   return (

@@ -12,6 +12,10 @@ from app.routes.chat import (
     router as chat_router
 )
 
+from app.routes.stream import (
+    router as stream_router
+)
+
 app = FastAPI()
 
 app.add_middleware(
@@ -30,6 +34,10 @@ app.include_router(
 )
 app.include_router(
     chat_router
+)
+
+app.include_router(
+    stream_router
 )
 
 @app.get("/")
