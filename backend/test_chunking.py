@@ -9,7 +9,8 @@ data = process_youtube_video(url)
 
 chunks = chunk_text(
     data["transcript"],
-    get_video_id(url)
+    get_video_id(url),
+    "A"
 )
 
 print("Chunk count:", len(chunks))

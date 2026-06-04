@@ -14,7 +14,8 @@ def store_chunks(embedded_chunks):
             PointStruct(
                 id=i,
                 vector=chunk["embedding"],
-                payload={
+                payload = {
+                    "video_label":chunk["video_label"],
                     "video_id": chunk["video_id"],
                     "chunk_id": chunk["chunk_id"],
                     "text": chunk["text"]

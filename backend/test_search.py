@@ -7,6 +7,7 @@ results = search_chunks(
 for result in results:
 
     print()
+    print("Label:", result.payload["video_label"])
     print("Video:", result.payload["video_id"])
     print("Chunk:", result.payload["chunk_id"])
     print()

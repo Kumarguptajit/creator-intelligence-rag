@@ -12,7 +12,8 @@ data = process_youtube_video(url)
 
 chunks = chunk_text(
     data["transcript"],
-    data["metadata"]["video_id"]
+    data["metadata"]["video_id"],
+    "A"
 )
 
 embedded_chunks = embed_chunks(chunks)

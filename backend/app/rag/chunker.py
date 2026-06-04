@@ -1,7 +1,11 @@
 from langchain_text_splitters import ( RecursiveCharacterTextSplitter )
 
 
-def chunk_text(text, video_id):
+def chunk_text(
+    text,
+    video_id,
+    video_label
+):
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=800,
@@ -14,6 +18,7 @@ def chunk_text(text, video_id):
         {
             "chunk_id": i,
             "video_id": video_id,
+            "video_label": video_label,
             "text": chunk
         }
         for i, chunk in enumerate(chunks)
