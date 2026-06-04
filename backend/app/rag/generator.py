@@ -2,6 +2,9 @@ import os
 
 from dotenv import load_dotenv
 from google import genai
+from app.rag.memory import (
+    format_history
+)
 
 load_dotenv()
 
@@ -20,18 +23,22 @@ def generate_answer(
             for chunk in retrieved_chunks
         ]
     )
+    history = format_history()
 
     prompt = f"""
-You are a creator intelligence assistant.
+    You are a creator intelligence assistant.
 
-Use only the provided context.
+    Use the conversation history and retrieved context.
 
-Context:
-{context}
+    Conversation History:
+    {history}
 
-Question:
-{question}
-"""
+    Context:
+    {context}
+
+    Question:
+    {question}
+    """
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
