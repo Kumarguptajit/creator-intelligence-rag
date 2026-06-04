@@ -1,4 +1,7 @@
 from app.ingestion.service import process_youtube_video
+from app.rag.comparison_context import (
+    save_comparison_context
+)
 
 from app.rag.comparison import (
     get_video_context,
@@ -27,6 +30,13 @@ def prepare_comparison(
     context_b = get_video_context(
         "Summarize this video",
         "B"
+    )
+
+    save_comparison_context(
+        data_a["metadata"],
+        data_b["metadata"],
+        context_a,
+        context_b
     )
 
     prompt = build_comparison_prompt(
