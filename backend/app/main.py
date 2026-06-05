@@ -16,6 +16,10 @@ from app.routes.stream import (
     router as stream_router
 )
 
+from app.routes.context import (
+    router as context_router
+)
+
 app = FastAPI()
 
 app.add_middleware(
@@ -38,6 +42,10 @@ app.include_router(
 
 app.include_router(
     stream_router
+)
+
+app.include_router(
+    context_router
 )
 
 @app.get("/")

@@ -17,5 +17,6 @@ def extract_metadata(url: str):
     "likes": info.get("like_count"),
     "comments": info.get("comment_count"),
     "duration": info.get("duration"),
-    "upload_date": info.get("upload_date")
+    "upload_date": info.get("upload_date"),
+    "thumbnail": info.get("thumbnail")
 }
