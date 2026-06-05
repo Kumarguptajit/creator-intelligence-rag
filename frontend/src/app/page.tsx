@@ -2,10 +2,15 @@
 
 import { useState } from "react";
 
+
 export default function Home() {
   const [videoA, setVideoA] = useState("");
   const [videoB, setVideoB] = useState("");
   const [question, setQuestion] = useState("");
+
+  const [videoData, setVideoData] =
+    useState<any>(null);
+
   const [messages, setMessages] = useState([
   {
     role: "assistant",
@@ -17,7 +22,7 @@ export default function Home() {
     setMessages([
       {
         role: "assistant",
-        content: "Loading..."
+        content: "Analyzing videos..."
       }
     ]);
 
@@ -36,6 +41,16 @@ export default function Home() {
     );
 
     const text = await res.text();
+    const contextRes = await fetch(
+      "http://127.0.0.1:8000/comparison-context"
+    );
+
+    const contextData =
+      await contextRes.json();
+
+    setVideoData(
+      contextData
+    );
 
     setMessages([
       {
@@ -158,6 +173,170 @@ export default function Home() {
       >
         Send
       </button>
+
+      {videoData && (
+
+        <div className="grid grid-cols-2 gap-4 mt-8">
+
+          {/* Video A */}
+
+          <div className="border rounded-lg p-5 shadow">
+
+            <h2 className="text-xl font-bold mb-4">
+              Video A
+            </h2>
+
+            <div className="mb-3">
+
+              <div className="font-semibold">
+                {videoData.video_a.title}
+              </div>
+
+              <div className="text-sm text-gray-500">
+                {videoData.video_a.creator}
+              </div>
+
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+
+              <div>
+                <div className="text-sm">
+                  Views
+                </div>
+
+                <div className="font-bold">
+                  {videoData.video_a.views?.toLocaleString()}
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm">
+                  Likes
+                </div>
+
+                <div className="font-bold">
+                  {videoData.video_a.likes?.toLocaleString()}
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm">
+                  Comments
+                </div>
+
+                <div className="font-bold">
+                  {videoData.video_a.comments?.toLocaleString()}
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm">
+                  Engagement
+                </div>
+
+                <div className="font-bold">
+                  {videoData.video_a.engagement_rate}%
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm">
+                  Duration
+                </div>
+
+                <div className="font-bold">
+                  {Math.floor(
+                    videoData.video_a.duration / 60
+                  )}m {videoData.video_a.duration % 60}s
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Video B */}
+
+          <div className="border rounded-lg p-5 shadow">
+
+            <h2 className="text-xl font-bold mb-4">
+              Video B
+            </h2>
+
+            <div className="mb-3">
+
+              <div className="font-semibold">
+                {videoData.video_b.title}
+              </div>
+
+              <div className="text-sm text-gray-500">
+                {videoData.video_b.creator}
+              </div>
+
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+
+              <div>
+                <div className="text-sm">
+                  Views
+                </div>
+
+                <div className="font-bold">
+                  {videoData.video_b.views?.toLocaleString()}
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm">
+                  Likes
+                </div>
+
+                <div className="font-bold">
+                  {videoData.video_b.likes?.toLocaleString()}
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm">
+                  Comments
+                </div>
+
+                <div className="font-bold">
+                  {videoData.video_b.comments?.toLocaleString()}
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm">
+                  Engagement
+                </div>
+
+                <div className="font-bold">
+                  {videoData.video_b.engagement_rate}%
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm">
+                  Duration
+                </div>
+
+                <div className="font-bold">
+                  {Math.floor(
+                    videoData.video_b.duration / 60
+                  )}m {videoData.video_b.duration % 60}s
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
       <div className="mt-8 border p-4">
 
