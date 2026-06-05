@@ -1,4 +1,6 @@
-from app.ingestion.service import process_youtube_video
+from app.ingestion.service import (
+    process_video
+)
 from app.rag.comparison_context import (
     save_comparison_context
 )
@@ -14,11 +16,11 @@ def prepare_comparison(
     video_b_url
 ):
 
-    data_a = process_youtube_video(
+    data_a = process_video(
         video_a_url
     )
 
-    data_b = process_youtube_video(
+    data_b = process_video(
         video_b_url
     )
 
