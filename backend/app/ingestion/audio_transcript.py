@@ -1,15 +1,15 @@
 from faster_whisper import WhisperModel
 
-model = WhisperModel(
-    "base",
-    device="cpu",
-    compute_type="int8"
-)
-
 
 def transcribe_audio(audio_path: str):
 
     try:
+
+        model = WhisperModel(
+            "base",
+            device="cpu",
+            compute_type="int8"
+        )
 
         segments, info = model.transcribe(
             audio_path,
@@ -31,8 +31,6 @@ def transcribe_audio(audio_path: str):
 
     except Exception as e:
 
-        print(
-            f"Whisper error: {e}"
-        )
+        print(f"Whisper error: {e}")
 
         return ""
