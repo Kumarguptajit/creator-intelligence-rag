@@ -23,11 +23,13 @@ def prepare_comparison(
 ):
 
     data_a = process_video(
-        video_a_url
+        video_a_url,
+        "A"
     )
 
     data_b = process_video(
-        video_b_url
+        video_b_url,
+        "B"
     )
 
     context_a = get_video_context(

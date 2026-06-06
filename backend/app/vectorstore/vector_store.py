@@ -1,3 +1,5 @@
+import uuid
+
 from qdrant_client.models import PointStruct
 from qdrant_client import models
 
@@ -13,7 +15,7 @@ def store_chunks(embedded_chunks):
 
         points.append(
             PointStruct(
-                id=i,
+                id=str(uuid.uuid4()),
                 vector=chunk["embedding"],
                 payload = {
                     "video_label":chunk["video_label"],

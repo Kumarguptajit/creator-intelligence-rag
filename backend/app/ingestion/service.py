@@ -7,6 +7,10 @@ from app.ingestion.instagram import (
 from app.ingestion.instagram_transcript import (
     extract_instagram_transcript
 )
+from app.rag.chunker import chunk_text
+from app.rag.embeddings import  embed_chunks
+from app.vectorstore.vector_store import store_chunks
+from app.rag.chunker import chunk_text
 
 def calculate_engagement_rate(
     views,
@@ -40,7 +44,7 @@ def process_youtube_video(url: str):
         "transcript": transcript
     }
 
-def process_video(url: str):
+def process_video(url: str, video_label: str):
 
     if "instagram.com" in url:
 
@@ -62,13 +66,29 @@ def process_video(url: str):
             url
         )
 
-    metadata["engagement_rate"] = (
-        calculate_engagement_rate(
-            metadata.get("views"),
-            metadata.get("likes"),
-            metadata.get("comments")
+        metadata["engagement_rate"] = (
+            calculate_engagement_rate(
+                metadata.get("views"),
+                metadata.get("likes"),
+                metadata.get("comments")
+            )
         )
-    )
+
+        chunks = chunk_text(
+            transcript,
+            metadata["video_id"],
+            video_label
+        )
+
+        embedded_chunks = embed_chunks(
+            chunks
+        )
+
+        store_chunks(
+            embedded_chunks
+        )
+
+
 
     return {
         "metadata": metadata,
