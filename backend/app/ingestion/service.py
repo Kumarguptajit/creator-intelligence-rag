@@ -73,21 +73,21 @@ def process_video(url: str, video_label: str):
                 metadata.get("comments")
             )
         )
-
+        print("TRANSCRIPT LENGTH:", len(transcript))
         chunks = chunk_text(
             transcript,
             metadata["video_id"],
             video_label
         )
-
+        print("CHUNKS CREATED:", len(chunks))
         embedded_chunks = embed_chunks(
             chunks
         )
-
+        print("EMBEDDED CHUNKS:", len(embedded_chunks))
         store_chunks(
             embedded_chunks
         )
-
+        print("STORE COMPLETE")
 
 
     return {
