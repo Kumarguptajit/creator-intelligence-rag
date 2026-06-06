@@ -14,6 +14,9 @@ def comparison_context():
 
     comparison = get_comparison_context()
 
+    print("COMPARISON CONTEXT:")
+    print(comparison)
+
     return {
         "video_a": comparison.get(
             "metadata_a",

@@ -2,7 +2,7 @@ from app.ingestion.service import (
     process_video
 )
 from app.rag.comparison_context import (
-    save_comparison_context
+    save_comparison_context, get_comparison_context
 )
 
 from app.rag.comparison import (
@@ -39,6 +39,11 @@ def prepare_comparison(
         "Summarize this video",
         "B"
     )
+    # print("DATA A METADATA:")
+    # print(data_a["metadata"])
+
+    # print("DATA B METADATA:")
+    # print(data_b["metadata"])
 
     save_comparison_context(
         data_a["metadata"],
@@ -46,6 +51,9 @@ def prepare_comparison(
         context_a,
         context_b
     )
+    # print("CONTEXT SAVED")
+    # print("AFTER SAVE:")
+    # print(get_comparison_context())
 
     prompt = build_comparison_prompt(
         data_a["metadata"],

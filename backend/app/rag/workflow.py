@@ -7,6 +7,10 @@ from app.rag.comparison import compare_videos
 
 class ComparisonState(TypedDict):
 
+    video_a_url: str
+
+    video_b_url: str
+
     prompt: str
 
     answer: str

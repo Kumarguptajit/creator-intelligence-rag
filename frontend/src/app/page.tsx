@@ -214,7 +214,13 @@ export default function Home() {
               )}              <div className={`mb-4 h-1.5 rounded-full ${winnerEngagement ? "bg-emerald-500/30" : "bg-orange-500/30"}`} />
               <div className="mb-4">
                 <h2 className="text-xl font-semibold text-slate-900">First Video</h2>
-                <p className="mt-1 text-sm text-slate-500">{videoData.video_a.creator}</p>
+                <p className="mt-1 text-sm text-slate-500">
+                  {videoData.video_a.creator}
+                </p>
+
+                <p className="text-sm text-slate-500">
+                  Followers: {videoData.video_a.follower_count || "N/A"}
+                </p>
               </div>
 
               <div className="mb-4">
@@ -259,16 +265,24 @@ export default function Home() {
               </div>
             </div>
 
-            <div className={`${cardBaseClass} ${winnerEngagement ? "bg-orange-50 border-orange-200" : "bg-emerald-50 border-emerald-200"}`}>              {videoData.video_b.thumbnail && (
+            <div className={`${cardBaseClass} ${winnerEngagement ? "bg-orange-50 border-orange-200" : "bg-emerald-50 border-emerald-200"}`}>              
+              {videoData.video_b.thumbnail && (
                 <img
                   src={videoData.video_b.thumbnail}
                   alt={videoData.video_b.title}
                   className="mb-4 h-32 w-full rounded-lg object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
                 />
-              )}              <div className={`mb-4 h-1.5 rounded-full ${winnerEngagement ? "bg-orange-500/30" : "bg-emerald-500/30"}`} />
+              )}              
+              <div className={`mb-4 h-1.5 rounded-full ${winnerEngagement ? "bg-orange-500/30" : "bg-emerald-500/30"}`} />
               <div className="mb-4">
                 <h2 className="text-xl font-semibold text-slate-900">Second Video</h2>
                 <p className="mt-1 text-sm text-slate-500">{videoData.video_b.creator}</p>
+                <p className="text-sm text-slate-500">
+                  Followers: {videoData.video_b.follower_count || "N/A"}
+                </p>
               </div>
 
               <div className="mb-4">
