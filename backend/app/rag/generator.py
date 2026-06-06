@@ -1,6 +1,4 @@
 import os
-
-from app.routes import comparison
 from dotenv import load_dotenv
 from google import genai
 from app.rag.memory import (
@@ -23,11 +21,20 @@ def generate_answer(
     retrieved_chunks
 ):
 
+    context_parts = []
+
+    for chunk in retrieved_chunks:
+
+        context_parts.append(
+            f"""
+    [{chunk.payload['video_label']} Chunk {chunk.payload['chunk_id']}]
+
+    {chunk.payload['text']}
+    """
+        )
+
     context = "\n\n".join(
-        [
-            chunk.payload["text"]
-            for chunk in retrieved_chunks
-        ]
+        context_parts
     )
     history = format_history()
     comparison = get_comparison_context()
@@ -70,11 +77,52 @@ def generate_answer(
     Question:
     {question}
 
-    If the user asks follow-up questions
-    about Video A, Video B, hooks,
-    engagement, educational value,
-    improvements, or comparison results,
-    use the comparison context first.
+    IMPORTANT:
+
+    If Comparison Context exists:
+
+    - Assume the user is referring to the current Video A and Video B.
+    - Never say you do not have access to the videos.
+    - Never ask the user to provide the videos again.
+    - Use Comparison Context first.
+    - Use Retrieved Context second.
+    - Use Conversation History third.
+
+    Support claims using evidence.
+
+    IMPORTANT:
+
+    Every factual claim about a video,
+    hook, structure, engagement,
+    educational value, strengths,
+    weaknesses, or performance MUST
+    include a source citation.
+
+    Citation format:
+
+    [Source: A Chunk 1]
+
+    [Source: B Chunk 86]
+
+    Do not make claims without citing
+    supporting evidence.
+
+    Use transcript context as the primary source of truth.
+
+    If transcript content conflicts with metadata
+    such as title or creator information,
+    trust the transcript context.
+
+    For questions about performance,
+    consider:
+
+    - Hook
+    - Structure
+    - Educational value
+    - Audience appeal
+    - Engagement metrics
+
+    Do not rely only on views, likes, and comments.
     """
 
     response = client.models.generate_content(
