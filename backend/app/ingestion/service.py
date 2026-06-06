@@ -1,3 +1,5 @@
+from importlib import metadata
+
 from app.ingestion.youtube import extract_metadata
 from app.ingestion.transcript import extract_transcript
 from app.ingestion.instagram import (
@@ -66,29 +68,27 @@ def process_video(url: str, video_label: str):
             url
         )
 
-        metadata["engagement_rate"] = (
-            calculate_engagement_rate(
-                metadata.get("views"),
-                metadata.get("likes"),
-                metadata.get("comments")
-            )
+    metadata["engagement_rate"] = (
+        calculate_engagement_rate(
+            metadata.get("views"),
+            metadata.get("likes"),
+            metadata.get("comments")
         )
-        print("TRANSCRIPT LENGTH:", len(transcript))
-        chunks = chunk_text(
-            transcript,
-            metadata["video_id"],
-            video_label
-        )
-        print("CHUNKS CREATED:", len(chunks))
-        embedded_chunks = embed_chunks(
-            chunks
-        )
-        print("EMBEDDED CHUNKS:", len(embedded_chunks))
-        store_chunks(
-            embedded_chunks
-        )
-        print("STORE COMPLETE")
+    )
 
+    chunks = chunk_text(
+        transcript,
+        metadata["video_id"],
+        video_label
+    )
+
+    embedded_chunks = embed_chunks(
+        chunks
+    )
+
+    store_chunks(
+        embedded_chunks
+    )
 
     return {
         "metadata": metadata,
