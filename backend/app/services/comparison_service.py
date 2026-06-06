@@ -10,6 +10,12 @@ from app.rag.comparison import (
     build_comparison_prompt
 )
 
+from app.rag.workflow import (
+    comparison_graph
+)
+
+
+
 
 def prepare_comparison(
     video_a_url,
@@ -48,4 +54,10 @@ def prepare_comparison(
         context_b
     )
 
-    return prompt
+    result = comparison_graph.invoke(
+        {
+            "prompt": prompt
+        }
+    )
+
+    return result["answer"]
