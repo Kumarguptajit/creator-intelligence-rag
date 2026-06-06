@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-from google import genai
 from app.rag.memory import (
     format_history
 )
@@ -8,12 +7,10 @@ from app.rag.memory import (
 from app.rag.comparison_context import (
     get_comparison_context
 )
+from app.rag.gemini_client import generate_content
 
 load_dotenv()
 
-client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
 
 
 def generate_answer(
@@ -125,7 +122,7 @@ def generate_answer(
     Do not rely only on views, likes, and comments.
     """
 
-    response = client.models.generate_content(
+    response = generate_content(
         model="gemini-2.5-flash",
         contents=prompt
     )

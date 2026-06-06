@@ -1,6 +1,6 @@
 from app.vectorstore.vector_store import search_video_chunks
 
-from app.rag.generator import client
+from app.rag.gemini_client import generate_content
 
 from app.rag.memory import format_history
 
@@ -107,7 +107,7 @@ Output Format:
 
 def compare_videos(prompt):
 
-    response = client.models.generate_content(
+    response = generate_content(
         model="gemini-2.5-flash",
         contents=prompt
     )
