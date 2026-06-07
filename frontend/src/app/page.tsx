@@ -6,6 +6,7 @@ import { Eye, ThumbsUp, MessageCircle, TrendingUp } from "lucide-react";
 
 
 export default function Home() {
+  const API = process.env.NEXT_PUBLIC_API_URL;
   const [videoA, setVideoA] = useState("");
   const [videoB, setVideoB] = useState("");
   const [question, setQuestion] = useState("");
@@ -48,7 +49,7 @@ export default function Home() {
     ]);
 
     const res = await fetch(
-      "http://127.0.0.1:8000/compare",
+      `${API}/compare`,
       {
         method: "POST",
         headers: {
@@ -63,7 +64,7 @@ export default function Home() {
 
     const text = await res.text();
     const contextRes = await fetch(
-      "http://127.0.0.1:8000/comparison-context"
+      `${API}/comparison-context`
     );
 
     const contextData =
@@ -100,7 +101,7 @@ export default function Home() {
     ]);
 
     const res = await fetch(
-      "http://127.0.0.1:8000/stream",
+      `${API}/stream`,
       {
         method: "POST",
         headers: {
@@ -207,7 +208,7 @@ export default function Home() {
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             <div className={`${cardBaseClass} ${winnerEngagement ? "bg-emerald-50 border-emerald-200" : "bg-orange-50 border-orange-200"}`}>              {videoData.video_a.thumbnail && (
                 <img
-                  src={`http://127.0.0.1:8000/thumbnail?url=${encodeURIComponent(
+                  src={`${API}/thumbnail?url=${encodeURIComponent(
                     videoData.video_a.thumbnail
                   )}`}
                   alt={videoData.video_a.title}
@@ -270,7 +271,7 @@ export default function Home() {
             <div className={`${cardBaseClass} ${winnerEngagement ? "bg-orange-50 border-orange-200" : "bg-emerald-50 border-emerald-200"}`}>              
               {videoData.video_b.thumbnail && (
                 <img
-                  src={`http://127.0.0.1:8000/thumbnail?url=${encodeURIComponent(
+                  src={`${API}/thumbnail?url=${encodeURIComponent(
                     videoData.video_b.thumbnail
                   )}`}
                   alt={videoData.video_b.title}
