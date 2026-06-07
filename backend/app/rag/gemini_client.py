@@ -46,18 +46,23 @@ def generate_content_stream(model, contents):
 
     last_error = None
 
-    for _ in range(len(CLIENTS)):
-
-        client = next(client_cycle)
+    for key in GEMINI_KEYS:
 
         try:
 
-            stream = client.models.generate_content_stream(
+            client = genai.Client(
+                api_key=key
+            )
+
+            response = client.models.generate_content_stream(
                 model=model,
                 contents=contents
             )
 
-            return stream
+            for chunk in response:
+                yield chunk
+
+            return
 
         except Exception as e:
 
