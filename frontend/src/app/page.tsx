@@ -207,7 +207,9 @@ export default function Home() {
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             <div className={`${cardBaseClass} ${winnerEngagement ? "bg-emerald-50 border-emerald-200" : "bg-orange-50 border-orange-200"}`}>              {videoData.video_a.thumbnail && (
                 <img
-                  src={videoData.video_a.thumbnail}
+                  src={`http://127.0.0.1:8000/thumbnail?url=${encodeURIComponent(
+                    videoData.video_a.thumbnail
+                  )}`}
                   alt={videoData.video_a.title}
                   className="mb-4 h-32 w-full rounded-lg object-cover"
                 />
@@ -268,7 +270,9 @@ export default function Home() {
             <div className={`${cardBaseClass} ${winnerEngagement ? "bg-orange-50 border-orange-200" : "bg-emerald-50 border-emerald-200"}`}>              
               {videoData.video_b.thumbnail && (
                 <img
-                  src={videoData.video_b.thumbnail}
+                  src={`http://127.0.0.1:8000/thumbnail?url=${encodeURIComponent(
+                    videoData.video_b.thumbnail
+                  )}`}
                   alt={videoData.video_b.title}
                   className="mb-4 h-32 w-full rounded-lg object-cover"
                   onError={(e) => {

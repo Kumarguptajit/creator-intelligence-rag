@@ -1,4 +1,5 @@
 import os
+import itertools
 from dotenv import load_dotenv
 from google import genai
 
@@ -12,25 +13,27 @@ GEMINI_KEYS = [
 
 GEMINI_KEYS = [k for k in GEMINI_KEYS if k]
 
+CLIENTS = [
+    genai.Client(api_key=key)
+    for key in GEMINI_KEYS
+]
+
+client_cycle = itertools.cycle(CLIENTS)
 
 def generate_content(model, contents):
 
     last_error = None
 
-    for key in GEMINI_KEYS:
+    for _ in range(len(CLIENTS)):
+
+        client = next(client_cycle)
 
         try:
 
-            client = genai.Client(
-                api_key=key
-            )
-
-            response = client.models.generate_content(
+            return client.models.generate_content(
                 model=model,
                 contents=contents
             )
-
-            return response
 
         except Exception as e:
 
@@ -38,24 +41,23 @@ def generate_content(model, contents):
             last_error = e
 
     raise last_error
-
 
 def generate_content_stream(model, contents):
 
     last_error = None
 
-    for key in GEMINI_KEYS:
+    for _ in range(len(CLIENTS)):
+
+        client = next(client_cycle)
 
         try:
 
-            client = genai.Client(
-                api_key=key
-            )
-
-            return client.models.generate_content_stream(
+            stream = client.models.generate_content_stream(
                 model=model,
                 contents=contents
             )
+
+            return stream
 
         except Exception as e:
 
@@ -63,3 +65,4 @@ def generate_content_stream(model, contents):
             last_error = e
 
     raise last_error
+

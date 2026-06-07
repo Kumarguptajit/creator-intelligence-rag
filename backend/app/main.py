@@ -20,6 +20,8 @@ from app.routes.context import (
     router as context_router
 )
 
+from app.routes.thumbnail import router as thumbnail_router
+
 app = FastAPI()
 
 app.add_middleware(
@@ -47,6 +49,8 @@ app.include_router(
 app.include_router(
     context_router
 )
+
+app.include_router(thumbnail_router)
 
 @app.get("/")
 def health():
