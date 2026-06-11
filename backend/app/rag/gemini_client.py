@@ -42,6 +42,7 @@ def generate_content(model, contents):
 
     raise last_error
 
+
 def generate_content_stream(model, contents):
 
     last_error = None
@@ -66,8 +67,13 @@ def generate_content_stream(model, contents):
 
         except Exception as e:
 
-            print(f"Gemini key failed: {e}")
+            print(
+                f"Gemini key failed: {e}"
+            )
+
             last_error = e
 
-    raise last_error
-
+    yield """
+Gemini is currently experiencing high demand.
+Please try again in a few moments.
+"""
