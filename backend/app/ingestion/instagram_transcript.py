@@ -9,16 +9,13 @@ from app.ingestion.downloader import (
 from app.ingestion.audio_transcript import (
     transcribe_audio
 )
-
+import time
 
 def extract_instagram_transcript(
-    url: str
+    url: str,
+    metadata: dict
 ):
-
-    metadata = extract_instagram_metadata(
-        url
-    )
-
+    
     description = metadata.get(
         "description",
         ""
@@ -26,14 +23,27 @@ def extract_instagram_transcript(
 
     try:
 
+        download_start = time.time()
+
         audio_file = download_audio(
             url
         )
+
+        print(
+            f"Audio download took "
+            f"{time.time() - download_start:.2f}s"
+        )
+
+        transcribe_start = time.time()
 
         transcript = transcribe_audio(
             audio_file
         )
 
+        print(
+            f"Whisper transcription took "
+            f"{time.time() - transcribe_start:.2f}s"
+        )
         if transcript and len(transcript) > 30:
 
             return transcript

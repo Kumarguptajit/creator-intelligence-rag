@@ -56,7 +56,8 @@ def process_video(url: str, video_label: str):
         )
         transcript_start = time.time()
         transcript = extract_instagram_transcript(
-            url
+            url,
+            metadata
         )
         print(
             f"Transcript extraction took "
@@ -70,7 +71,8 @@ def process_video(url: str, video_label: str):
         )
         transcript_start = time.time()
         transcript = extract_transcript(
-            url
+            url,
+            metadata
         )
         print(
             f"Transcript extraction took "
